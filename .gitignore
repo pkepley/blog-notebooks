@@ -1,0 +1,7 @@
+## Ignore emacs tmps
+[.][#]*
+[#]*[#]
+*~
+
+## Ignore checkpoints
+*ipynb_checkpoints
