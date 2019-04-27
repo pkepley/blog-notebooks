@@ -1,6 +1,8 @@
 \documentclass{standalone}   % We just need a standalone document
 \usepackage{tikz}            % Drawing package
 \usetikzlibrary{arrows.meta} % Making pretty arrows
+
+\definecolor{pltBlue}{RGB}{31,119,180} % Matplotlib's Blue
 \definecolor{pltGreen}{RGB}{44,160,44} % Matplotlib's Green
 
 \begin{document}
@@ -18,14 +20,15 @@
   \draw[pltGreen, rotate around={45:(0,0)}] (0.2,0)  -- (0.2, 0.2) -- (0, 0.2); 
   \node at ({-0.5 * cos(45) + 0.2}, {-0.5 * cos(45)}) {$l$};
   
-  % Draw some ``random'' points
-  \draw[black, fill] ({cos(45)}, {sin(45)}) circle [radius=0.1];
-  \draw[black, fill] ({cos(100)}, {sin(100)}) circle [radius=0.1];
-  \draw[black, fill] ({cos(170)}, {sin(170)}) circle [radius=0.1];
-  \draw[black, fill] ({cos(200)}, {sin(200)}) circle [radius=0.1];
-
   % Draw the circle big circle
   \draw[black, ultra thick] (0.0, 0.0) circle [radius=1.0];
+
+  % Draw some ``random'' points
+  \draw[pltBlue, fill] ({cos(45)}, {sin(45)}) circle [radius=0.1];
+  \draw[pltBlue, fill] ({cos(100)}, {sin(100)}) circle [radius=0.1];
+  \draw[pltBlue, fill] ({cos(170)}, {sin(170)}) circle [radius=0.1];
+  \draw[pltBlue, fill] ({cos(200)}, {sin(200)}) circle [radius=0.1];
+
 
 \end{tikzpicture}
 \end{document}
