@@ -1,6 +1,7 @@
 import os, sys
 import requests
 import zipfile
+import numpy as np
 import pandas as pd
 import geopandas as gpd
 import matplotlib
@@ -24,6 +25,7 @@ def get_contiguous_states(data_path):
         contents = req.content
         with open(connectivity_data_path, 'wb') as f:
             f.write(contents)
+        contents = contents.decode('utf-8')
     else:
         with open(connectivity_data_path, 'r') as f:
             contents = f.read()
@@ -31,10 +33,11 @@ def get_contiguous_states(data_path):
     # Parse the contents to get 2 columns:
     #   data[0][:] = base state
     #   data[1][:] = border state
-    data = [row.split(' ') for row in contents.split('\n')]
-    data = [row for row in data if len(row) > 1]
-
-    return data
+    state_connxns = [row.split(' ') for row in contents.split('\n')]
+    state_connxns = np.array([row for row in state_connxns if len(row) > 1])
+    df_state_connxns = pd.DataFrame(state_connxns, columns=['BASE_STATE', 'BORDER_STATE'])
+    
+    return df_state_connxns
 
 def get_contiguous_states_shapefile(data_path):
     # Pull contiguous states shapefile from NWS
@@ -78,7 +81,7 @@ def get_contiguous_states_shapefile(data_path):
     df_cont_state_shps.plot(ax=ax, color='white', edgecolor='black')
     df_state_centroids.plot(ax=ax, markersize=10, color='C1')
     plt.axis('off')
-    plt.savefig('./test.png')
+    plt.savefig('./junk.png')
     
     
 if __name__ == '__main__':
