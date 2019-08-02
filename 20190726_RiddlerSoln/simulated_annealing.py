@@ -87,11 +87,11 @@ def simulated_annealing(cities, distances, max_T_steps, T_start, t_reduce_factor
         print("T=%10.5f , distance= %10.5f , accepted steps= %d" % (T, dist, n_accepted))
         T *= t_reduce_factor
 
-        step_logger(city_order, dist)
+        step_logger(city_order, best_dist_found, step_t)
 
         if dist <= stopping_dist:
             break
-        
-    step_logger(best_order_found, best_dist_found)
+
+    step_logger(best_order_found, best_dist_found, step_t)        
 
     return best_order_found, best_dist_found
