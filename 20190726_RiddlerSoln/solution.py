@@ -166,14 +166,21 @@ def generate_graph_pos(state_graph):
 def plot_distances(distances, ax=None, img_path=None):
     if ax is None:
         fig, ax = plt.subplots()
-        
-    ax.imshow(distances)
+
+    # plot the distance matrix and add a colorbar
+    im = ax.imshow(distances)
+    plt.colorbar(im)
+
+    # set up the axis labels
     ax.set_xticks(np.arange(n_states))
     ax.set_xticklabels(states, fontsize=6, rotation=90)
     ax.set_yticks(np.arange(n_states))
-    ax.set_yticklabels(states, fontsize=6)    
+    ax.set_yticklabels(states, fontsize=6)
+
+    # show the image
     plt.show(block=False)
-    
+
+    # save the image if we have an img_path to save at
     if img_path is not None:
         plt.savefig('{0}/distances.png'.format(img_path), bbox_inches='tight', dpi=400)
 
@@ -333,9 +340,9 @@ if __name__ == '__main__':
     #
     try:
         if graphics_type == 'state_plot':
-            os.system('convert -delay 50 {0}/step_stateviz_*.png -delay 100 -loop 0 {0}/sa_solution.gif'.format(img_path))
+            os.system('convert -delay 50 {0}/step_stateviz_*.png -delay 100 -loop 0 {0}/sa_stateviz_solution.gif'.format(img_path))
         else:
-            os.system('convert -delay 50 {0}/step_graphviz_*.png -delay 100 -loop 0 {0}/sa_solution.gif'.format(img_path))            
+            os.system('convert -delay 50 {0}/step_graphviz_*.png -delay 100 -loop 0 {0}/sa_graphviz_solution.gif'.format(img_path))            
     except:
         print('Something went wrong making the gif. This step requires Imagemagick to be installed and on the path.')
             
