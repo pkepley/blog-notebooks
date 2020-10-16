@@ -1,0 +1,20 @@
+name: mcfar
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - descartes=1.1.0=py_4
+  - geojson=2.5.0=py_0
+  - geopandas=0.8.1=py_0
+  - jupyter=1.0.0=py38_7
+  - matplotlib=3.2.2=0
+  - numpy=1.19.1=py38hbc911f0_0
+  - pandas=1.1.0=py38he6710b0_0
+  - pip=20.2.1=py38_0
+  - proj=7.1.0=h966b41f_1
+  - python=3.8.5=h1103e12_8_cpython
+  - scipy=1.5.0=py38h0b6359f_0
+  - shapely=1.7.1=py38hc7361b7_0
+  - pip:
+    - overpy==0.4
+    - requests==2.24.0
