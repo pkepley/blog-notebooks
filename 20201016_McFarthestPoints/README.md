@@ -1,4 +1,4 @@
-# McFarthest Points (2020-10-11):
+# McFarthest Points (2020-10-16):
 
 ## Background
 This folder contains two notebooks (`McFarPoints.ipynb` and
