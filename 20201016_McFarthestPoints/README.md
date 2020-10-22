@@ -49,10 +49,9 @@ conda env create -f mcfar.yml
 To exactly reproduce my environment, use `mcfar_complete.yml` instead.
 
 ### Overpass URL
-I currently have an Overpass server on my local machine, so the
-Notebook points to this local server. If you don't have Overpass
-installed locally, you can override this by changing the
-`overpass_url` (an alternate is provided in the code).
+These notebooks currently points to the overpass-api.de server.
+You can change the overpass server by changing the
+`overpass_url`.
 
 ### Output
 If you don't want to bother with running the notebook and just want
