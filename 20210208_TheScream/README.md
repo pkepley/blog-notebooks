@@ -2,7 +2,7 @@
 
 This directory has a couple of scripts for recovering audio from
 waveform images from [this
-post](https://www.pakepley.com/2021-02-08-WineImagesIntoSound/). 
+post](https://www.paulkepley.com/2021-02-08-WineImagesIntoSound/). 
 
 There are two scripts in this directory,
 
