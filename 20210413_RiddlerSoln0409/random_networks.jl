@@ -17,6 +17,19 @@ begin
 	using Base.Threads
 end
 
+# ╔═╡ 7c9d6b8c-68f0-4481-b042-b51e217a8abd
+md"""
+# Stochastic Streets Riddler Solution
+
+In this post, we'll solve the [Riddler Problem](https://fivethirtyeight.com/features/can-you-navigate-the-one-way-streets/) from April $9^{th}$ 2021.
+
+In this problem, we're asked to consider a square gridded city with randomly oriented one way streets, and asked if it's about the probability of being able to navigate from the upper left-hand corner of the city to the lower right-hand corner on the road network.
+
+In the original problem statement, we're asked to consider a city 2 blocks across by 2 blocks high... but I will consider cities of arbitrary size. In this notebook, I provide a simulation for arbitrary sized cities, and a lazy exact solution for small cities. 
+
+*Note*: Since it makes notation a bit simpler, I will use $n$ to denote the number of intersections across the city. That is $n= n_\text{blocks} + 1$ where $n_\text{blocks}$ is the width of the city in blocks. 
+"""
+
 # ╔═╡ 891b9894-11b0-405f-aa85-232cc635db9a
 md"""
 ## Estimate Probability via Simulation
@@ -92,6 +105,7 @@ function random_street_graph(n)
 		# connect index of node k1 to k2 if 1, else k2 to k1
 		direction = rand((0,1))			
 		
+		# connect node k1 to k2 in the indicated direction
 		if direction > 0
 			add_edge!(g, k1, k2)
 		else
@@ -132,19 +146,19 @@ begin
 end
 
 # ╔═╡ cec180f1-68f3-42bc-a5d1-4a7eeca01ab4
-CSV.write("prob_path_sim_rslts.csv", df_prob_sim)
+CSV.write("./outputs/prob_path_sim_rslts.csv", df_prob_sim)
 
 # ╔═╡ 6d86c2cc-e62d-46b2-a844-343dbe083eab
 bar_plot_ref = @df df_prob_sim bar(
 	:city_width,
 	:prob_path,
-	title="Probability Path Exists From Top Left to Bottom Right",
+	title="Probability of Navigable Path From Top Left to Bottom Right",
 	xlabel="City Width (n)",
 	legend=false
 )
 
 # ╔═╡ eb45d228-befd-46bc-939d-758fb289fd4a
-png(bar_plot_ref, "prob_path.png")
+png(bar_plot_ref, "./outputs/prob_path.png")
 
 # ╔═╡ 377592fd-d9f5-4514-a488-2d9f35c4e822
 g = random_street_graph(3)
@@ -161,7 +175,7 @@ begin
 end
 
 # ╔═╡ 019727cd-8aaa-4fc5-bd7e-f90b7e3269d5
-draw(PNG("street_layout_example_1.png", 16cm, 16cm), street_plot)	
+draw(PNG("./outputs/street_layout_example_1.png", 16cm, 16cm), street_plot)	
 
 # ╔═╡ 3fda5c44-70f3-4202-861d-9c5c4a7415e3
 city_has_path(g)
@@ -181,7 +195,7 @@ begin
 end
 
 # ╔═╡ 9a95a271-f4be-48e9-9b04-57ae7976dda9
-draw(PNG("street_layout_example_2.png", 16cm, 16cm), street_plot2)	
+draw(PNG("./outputs/street_layout_example_2.png", 16cm, 16cm), street_plot2)	
 
 # ╔═╡ dede6d7e-362a-49d7-9223-12b16b0bcdf9
 city_has_path(g2)
@@ -195,9 +209,7 @@ function count_connected(n = 3, start=(1,1), finish=(n,n))
 	n_layouts = 2^n_adj
 	n_connected = 0
 	
-	#for i_layout = 0:(n_layouts-1)
-    Threads.@threads for i_layout ∈ 0:(n_layouts-1)
-		
+	for i_layout = 0:(n_layouts-1)		
 		# use the binary representation of i_layout to determine connections
 		#  1 represents forward connection
 		#  0 represents reverse connection
@@ -217,6 +229,7 @@ function count_connected(n = 3, start=(1,1), finish=(n,n))
 			# get the direction for the connection from k1 to k2 from layout
 			direction = layout[i_adj]
 			
+			# connect node k1 to k2 in the indicated direction
 			if direction == 1
 				add_edge!(g, k1, k2)
 			else
@@ -233,9 +246,6 @@ function count_connected(n = 3, start=(1,1), finish=(n,n))
 	return n_connected / n_layouts
 end
 
-# ╔═╡ 06bb3a39-49aa-42ad-988b-c33671fe1bdb
-CSV.write("prob_path_analytic_rslts.csv", df_analytic)
-
 # ╔═╡ 27f9b76a-b998-4fc4-b89d-baee19104f25
 begin 
 	n_max_analytic = 4
@@ -250,6 +260,9 @@ begin
 end
 
 
+# ╔═╡ 06bb3a39-49aa-42ad-988b-c33671fe1bdb
+CSV.write("./outputs/prob_path_analytic_rslts.csv", df_analytic)
+
 # ╔═╡ c2c4c421-8d79-498d-b246-4c1e94f5381b
 function idx_to_tuple(k, n)
 	i = div((k - 1), n) + 1	
@@ -263,28 +276,29 @@ function idx_to_tuple(k, n)
 end
 
 # ╔═╡ Cell order:
+# ╟─7c9d6b8c-68f0-4481-b042-b51e217a8abd
 # ╟─891b9894-11b0-405f-aa85-232cc635db9a
 # ╠═f05db774-9741-475b-a6fc-5df56154faa4
 # ╠═03792d01-268a-451b-8d48-13afdf6f379f
 # ╠═fb2302ca-8b2c-4e23-8dc6-36cc353b16cc
 # ╟─713a8126-0a4d-4373-ad57-6872e6aed059
-# ╠═377592fd-d9f5-4514-a488-2d9f35c4e822
+# ╟─377592fd-d9f5-4514-a488-2d9f35c4e822
 # ╟─caebbad7-460b-44d3-b6a6-0ff9d4684fe8
-# ╠═019727cd-8aaa-4fc5-bd7e-f90b7e3269d5
+# ╟─019727cd-8aaa-4fc5-bd7e-f90b7e3269d5
 # ╠═3fda5c44-70f3-4202-861d-9c5c4a7415e3
-# ╠═943d0cb8-8c4d-4c4f-9119-7ad84014fc0d
+# ╟─943d0cb8-8c4d-4c4f-9119-7ad84014fc0d
 # ╟─ccec4661-f080-402d-90c1-0d0ac7238e23
 # ╠═dede6d7e-362a-49d7-9223-12b16b0bcdf9
-# ╠═9a95a271-f4be-48e9-9b04-57ae7976dda9
+# ╟─9a95a271-f4be-48e9-9b04-57ae7976dda9
 # ╟─caf46b55-87cf-4351-9b6a-f729cce80251
 # ╠═285ee664-4c13-4a0b-8c0e-c9b9e5120078
 # ╟─cec180f1-68f3-42bc-a5d1-4a7eeca01ab4
-# ╠═6d86c2cc-e62d-46b2-a844-343dbe083eab
+# ╟─6d86c2cc-e62d-46b2-a844-343dbe083eab
 # ╟─eb45d228-befd-46bc-939d-758fb289fd4a
 # ╟─5327b953-268a-4b6d-9bf1-ce513f666b56
 # ╠═303cac4d-d222-414a-9b58-db2da01c3e9f
 # ╠═27f9b76a-b998-4fc4-b89d-baee19104f25
-# ╠═06bb3a39-49aa-42ad-988b-c33671fe1bdb
+# ╟─06bb3a39-49aa-42ad-988b-c33671fe1bdb
 # ╟─fd5d8a0c-9a36-11eb-37af-b323787108b5
 # ╠═38abf0ba-c6ea-4f45-acf1-b92eebe462a8
 # ╠═b5b7e758-e4de-4666-976b-583a732e8904
